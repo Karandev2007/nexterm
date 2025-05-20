@@ -1,2 +1,2 @@
 @echo off
-python C:\Users\Karan\Documents\GitHub\nexterm\nex.py %*
+python C:\Users\karan\Documents\GitHub\nexterm\nex.py %*
