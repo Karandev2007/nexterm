@@ -1,6 +1,9 @@
 import socket
 import platform
 import speedtest
+import subprocess
+import random
+import string
 
 # ipv4 default
 def show_ip():
@@ -47,3 +50,36 @@ def run_speedtest():
         print(f"🏓 Ping: {ping:.0f} ms")
     except Exception as e:
         print("❌ Speed test failed:", e)
+
+# show saved wifi pass
+def wifi_pass():
+    print("📶 Saved Wi-Fi Networks & Passwords:")
+    try:
+        networks = subprocess.check_output(['netsh', 'wlan', 'show', 'profiles'], encoding='utf-8')
+        for line in networks.split('\n'):
+            if "All User Profile" in line:
+                name = line.split(":")[1].strip()
+                try:
+                    result = subprocess.check_output(
+                        ['netsh', 'wlan', 'show', 'profile', name, 'key=clear'],
+                        encoding='utf-8',
+                        stderr=subprocess.DEVNULL
+                    )
+                    for rline in result.split('\n'):
+                        if "Key Content" in rline:
+                            password = rline.split(":")[1].strip()
+                            print(f"🔐 {name}: {password}")
+                            break
+                    else:
+                        print(f"🔐 {name}: (No password found)")
+                except:
+                    print(f"❌ Could not fetch password for {name}")
+    except Exception as e:
+        print("❌ Failed to retrieve Wi-Fi passwords:", e)
+
+# generate random pass
+def generate_password(length=16):
+    print("🔑 Generated Password:")
+    chars = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(chars) for _ in range(length))
+    print(password)
