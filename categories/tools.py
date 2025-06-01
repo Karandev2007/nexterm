@@ -4,6 +4,7 @@ import speedtest
 import subprocess
 import random
 import string
+import requests
 
 # ipv4 default
 def show_ip():
@@ -83,3 +84,22 @@ def generate_password(length=16):
     chars = string.ascii_letters + string.digits + string.punctuation
     password = ''.join(random.choice(chars) for _ in range(length))
     print(password)
+
+# full ipinfo feature:
+def ip_info(ip):
+    print(f"🔍 IP Info for {ip}:")
+    try:
+        res = requests.get(f"https://ipinfo.io/{ip}/json")
+        if res.status_code == 200:
+            data = res.json()
+            print(f"🌍 IP: {data.get('ip', '-')}")
+            print(f"🏙️ City: {data.get('city', '-')}")
+            print(f"🌐 Region: {data.get('region', '-')}")
+            print(f"🗺️ Country: {data.get('country', '-')}")
+            print(f"📡 ISP: {data.get('org', '-')}")
+            print(f"📍 Location: {data.get('loc', '-')}")
+            print(f"⌛ Timezone: {data.get('timezone', '-')}")
+        else:
+            print(f"❌ Failed to get info: {res.status_code}")
+    except Exception as e:
+        print("❌ Error fetching IP info:", e)    

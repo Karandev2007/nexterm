@@ -1,5 +1,5 @@
 import argparse
-from categories import tools, fun, ai
+from categories import tools, fun, ai, game
 
 def main():
     parser = argparse.ArgumentParser(
@@ -7,7 +7,7 @@ def main():
         description="🧠 NexTerm v1.1 - Smart Terminal Assistant",
     )
 
-    parser.add_argument("command", help="Tool to run (e.g., ip, hostname, info, speedtest, ipv6, wifi-pass, genpass, joke, ask)")
+    parser.add_argument("command", help="Tool to run (e.g., ip, hostname, info, speedtest, ipv6, wifi-pass, genpass, joke, ask, ipinfo, game)")
     parser.add_argument("extra", nargs="*", help="Optional extra input")
 
     args = parser.parse_args()
@@ -28,6 +28,11 @@ def main():
         tools.wifi_pass()
     elif cmd == "genpass":
         tools.generate_password()
+    elif cmd == "ipinfo":
+        if extra:
+            tools.ip_info(extra)
+        else:
+            print("❌ Usage: nex ipinfo <ip-address>")
     elif cmd == "joke":
         fun.joke()
     elif cmd == "ask":
@@ -35,6 +40,8 @@ def main():
             ai.ask(extra)
         else:
             print("❌ Usage: nex ask \"your question here\"")
+    elif cmd == "game":
+        game.start_game()
     else:
         print("❌ Unknown command.")
 
