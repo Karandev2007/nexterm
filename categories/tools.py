@@ -102,4 +102,36 @@ def ip_info(ip):
         else:
             print(f"❌ Failed to get info: {res.status_code}")
     except Exception as e:
-        print("❌ Error fetching IP info:", e)    
+        print("❌ Error fetching IP info:", e)
+
+# currency conversion
+def convert_currency(amount, from_currency, to_currency):
+    try:
+        url = f"https://open.er-api.com/v6/latest/{from_currency.upper()}"
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            rates = data.get("rates", {})
+            rate = rates.get(to_currency.upper())
+            if rate:
+                converted = float(amount) * rate
+                print(f"✅ {amount} {from_currency.upper()} = {converted:.2f} {to_currency.upper()}")
+            else:
+                print(f"❌ Currency '{to_currency.upper()}' not found.")
+        else:
+            print(f"❌ Failed to fetch rates: HTTP {response.status_code}")
+    except Exception as e:
+        print("❌ Error during currency conversion:", e)
+
+# weather info
+def get_weather(city):
+    print(f"🌤️ Weather in {city}:")
+    try:
+        url = f"https://wttr.in/{city}?format=3"
+        response = requests.get(url)
+        if response.status_code == 200:
+            print(response.text.strip())
+        else:
+            print(f"❌ Failed to fetch weather: HTTP {response.status_code}")
+    except Exception as e:
+        print("❌ Error fetching weather:", e)
