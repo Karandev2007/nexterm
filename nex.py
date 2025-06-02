@@ -1,5 +1,5 @@
 import argparse
-from categories import tools, fun, ai, game
+from categories import shooter_game, tools, fun, ai, guess_game
 
 def main():
     parser = argparse.ArgumentParser(
@@ -41,8 +41,10 @@ def main():
             ai.ask(question)
         else:
             print("❌ Usage: nex ask \"your question here\"")
-    elif cmd == "game":
-        game.start_game()
+    elif cmd == "shooter":
+        shooter_game.start_game()
+    elif cmd == "guess":
+        guess_game.play_guess_game()
     elif cmd == "currency":
         if len(extra) == 3:
             amount, from_currency, to_currency = extra
